@@ -18,3 +18,11 @@ cuadradoRojo.onmousemove = (e) => {
     const y = e.clientY;
     cuadradoRojo.innerHTML = `<h1>(${x}, ${y})</h1>`;
 }
+
+cuadradoRojo.onmousedown = () => {
+    cuadradoRojo.innerHTML = "<h1>CLICK</h1>"
+}
+
+cuadradoRojo.onmouseup = () => {
+    cuadradoRojo.innerHTML = "<h1>LEVANTAR</h1>"
+}

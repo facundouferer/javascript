@@ -1,10 +1,12 @@
 let texto = document.getElementById("texto")
 let mensaje = document.getElementById("mensaje")
 
+//Cuando se suelta una tecla.
 texto.onkeyup = () => {
-    mensaje.innerHTML = "SE SOLTÓ"
+    mensaje.innerHTML = "..."
 }
 
+//Cuando se presiona.
 texto.onkeydown = () => {
-    mensaje.innerHTML = "SE PRESIONÓ"
+    mensaje.innerHTML = "escribiendo..."
 }
