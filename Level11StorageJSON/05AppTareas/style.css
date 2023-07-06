@@ -34,7 +34,7 @@ input {
 }
 
 button {
-    width: 30%;
+    width: 50%;
     padding: 10px;
     font-size: 1.5rem;
     margin-left: 10px;
@@ -43,5 +43,12 @@ button {
 #contenido {
     background-color: #585858;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
+}
+
+.botones{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
