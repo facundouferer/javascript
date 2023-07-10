@@ -125,10 +125,8 @@ class Formulario {
 
                 break;
             case "editar":
+                //aquí se puede colocar el codigo para crear un formulario que permita editar un estudiante
                 console.log("editar");
-                break;
-            default:
-                console.log("default");
                 break;
         }
     }
