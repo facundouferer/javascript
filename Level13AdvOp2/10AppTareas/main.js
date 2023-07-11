@@ -60,6 +60,9 @@ const mostrarTareas = () => {
         btnEditar.addEventListener("click", () => editarTarea(tarea));
 
         contenido.appendChild(cardTarea);
+
+        console.log(tarea);
+
     });
 };
 
