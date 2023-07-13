@@ -63,10 +63,34 @@ const mostrarTareas = () => {
 };
 
 const eliminarTarea = (tarea) => {
-    let index = tareas.indexOf(tarea);
-    tareas.splice(index, 1);
-    mostrarTareas();
-    mostrarResumen();
+    Swal.fire({
+        title: 'Está seguro de eliminar la tarea?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, seguro',
+        cancelButtonText: 'No, no quiero'
+    }).then((result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+            let index = tareas.indexOf(tarea);
+            tareas.splice(index, 1);
+            mostrarTareas();
+            mostrarResumen();
+            Swal.fire({
+                title: 'Borrado!',
+                icon: 'success',
+                text: 'La tarea ha sido eliminada'
+            });
+            Toastify({
+                text: "Tienes una tarea menos!",
+                duration: 3000,
+                gravity: 'bottom',
+                position: 'left'
+            }).showToast();
+        }
+    });
+
+
 }
 
 const editarTarea = (tarea) => {
@@ -112,7 +136,30 @@ const mostrarResumen = () => {
 const guardarTodoEnStorage = document.getElementById("guardarTodoEnStorage");
 
 guardarTodoEnStorage.addEventListener("click", () => {
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    Swal.fire({
+        title: 'Está seguro de guardar las tareas?',
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem("tareas", JSON.stringify(tareas));
+            Toastify({
+                text: "Tareas guardadas!",
+                duration: 2000,
+            }).showToast();
+        } else {
+            Toastify({
+                text: "NO se guardó nada!",
+                duration: 2000,
+                style: {
+                    background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,92,1) 50%, rgba(252,176,69,1) 100%)',
+                    padding: '1rem'
+                }
+            }).showToast();
+        }
+    });
+
 });
 
 const recuperarTodoDelStorage = () => {
