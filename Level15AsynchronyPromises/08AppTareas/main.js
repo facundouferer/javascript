@@ -1,37 +1,36 @@
 class Tarea {
-    constructor(texto, fechaLimite) {
+    constructor(texto, fechaActual, fechaLimite) {
         this.texto = texto;
-        this.fecha = new Date();
+        this.fecha = new Date(fechaActual);
         this.fechaLimite = new Date(fechaLimite);
     }
     mostrarFecha() {
-        let fecha = this.fecha;
-        let dia = fecha.getUTCDate();
-        let mes = fecha.getMonth() + 1;
-        let anio = fecha.getFullYear();
-        return `${dia}/${mes}/${anio}`;
+        const DateTime = luxon.DateTime;
+        const fecha = DateTime.fromJSDate(this.fecha);
+        return `${fecha.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}`;
     }
     mostrarFechaLimite() {
-        let fechaLimite = new Date(this.fechaLimite);
-        let dia = fechaLimite.getUTCDate();
-        let mes = fechaLimite.getMonth() + 1;
-        let anio = fechaLimite.getFullYear();
-        return `${dia}/${mes}/${anio}`;
+        const DateTime = luxon.DateTime;
+        const fechaLimite = DateTime.fromJSDate(this.fechaLimite);
+        if (fechaLimite < new Date()) {
+            return `Venció ${fechaLimite.toRelative()}`;
+        } else {
+            return `Vence ${fechaLimite.toRelative()}`;
+        }
     }
 }
 
 const agregarTarea = (e) => {
     e.preventDefault();
     let inputTareaNueva = document.getElementById("inputTareaNueva");
+    let fechaActual = new Date();
     let fechaLimite = document.getElementById("fechaLimite").value;
     if (inputTareaNueva.value != "" || fechaLimite.value != "") {
-        let tarea = new Tarea(inputTareaNueva.value, fechaLimite);
+        let tarea = new Tarea(inputTareaNueva.value, fechaActual, fechaLimite);
         tareas.push(tarea);
         inputTareaNueva.value = "";
         fechaLimite.value = "";
         mostrarTareas();
-        mostrarResumen();
-        formulario.classList = "d-none";
     }
 }
 
@@ -41,24 +40,26 @@ const mostrarTareas = () => {
         let cardTarea = document.createElement("div");
         cardTarea.classList = "col-sm-4 mb-3";
         let fechaLimite = new Date(tarea.fechaLimite);
-        let claseCard = fechaLimite < new Date() ? `text-bg-danger` : `text-bg-secondary`;
+        let claseCard = fechaLimite < new Date() ? `text-bg-warning` : `text-bg-success`;
         cardTarea.innerHTML += `
-        <div class="card ${claseCard}">
-            <h5 class="card-header">${tarea.mostrarFecha()}</h5>
-            <div class="card-body">
-                <h5 class="card-title">Fecha límite: ${tarea.mostrarFechaLimite()}</h5>
-                <p class="card-text">${tarea.texto}</p>
-                <button class="btn btn-danger btnEliminar">Eliminar</button>                
-                <button class="btn btn-success btnEditar">Editar</button>                
-            </div>
-        </div>`;
+            <div class="card ${claseCard}">
+                <h6 class="card-header">${tarea.mostrarFecha()}</h6>
+                <div class="card-body">
+                    <p class="card-title">${tarea.mostrarFechaLimite()}</p>
+                    <p class="card-text">${tarea.texto}</p>
+                    <div class="text-center">
+                        <button class="btn btn-danger btnEliminar">Eliminar</button>                
+                        <button class="btn btn-primary btnEditar">Editar</button> 
+                    </div>
+                </div>
+            </div>`;
         let btnEliminar = cardTarea.querySelector(".btnEliminar");
         btnEliminar.addEventListener("click", () => eliminarTarea(tarea));
         let btnEditar = cardTarea.querySelector(".btnEditar");
         btnEditar.addEventListener("click", () => editarTarea(tarea));
         contenido.appendChild(cardTarea);
-        console.log(tarea);
     });
+    mostrarResumen();
 };
 
 const eliminarTarea = (tarea) => {
@@ -69,177 +70,146 @@ const eliminarTarea = (tarea) => {
         confirmButtonText: 'Sí, seguro',
         cancelButtonText: 'No, no quiero'
     }).then((result) => {
-        console.log(result);
         if (result.isConfirmed) {
             let index = tareas.indexOf(tarea);
             tareas.splice(index, 1);
             mostrarTareas();
-            mostrarResumen();
-            Swal.fire({
-                title: 'Borrado!',
-                icon: 'success',
-                text: 'La tarea ha sido eliminada'
-            });
-            Toastify({
-                text: "Tienes una tarea menos!",
-                duration: 3000,
-                gravity: 'bottom',
-                position: 'left'
-            }).showToast();
+            mostrarMensaje("Tarea eliminada!");
         }
     });
-
-
 }
 
 const editarTarea = (tarea) => {
-    const formulariosContainer = document.getElementById("formularios");
-    formulariosContainer.innerHTML = `
-      <h2>Editar Tarea</h2>
-      <form id="formularioEditar">
-        <div class="row mt-3">
-          <div class="col-8">
-            <textarea rows="5" id="inputTareaEditar" class="form-control form-control-lg" required>${tarea.texto}</textarea>
-          </div>
-          <div class="col-4 row">
-            <label for="fechaLimiteEditar" class="form-label">Fecha límite</label>
-            <input type="date" id="fechaLimiteEditar" class="form-control" value="${tarea.fechaLimite.toISOString().split("T")[0]}" required>
-            <div class="row mt-3">
-              <button type="button" class="btn btn-primary col-5 m-1" onclick="guardarCambiosTarea(${tareas.indexOf(tarea)})">Guardar</button>
-              <button type="button" class="btn btn-secondary col-5 m-1" onclick="cancelarCreacionTarea()">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    `;
+    mostrarFormulario();
+    let textoTarea = document.getElementById("inputTareaNueva");
+    let fechaLimite = document.getElementById("fechaLimiteNueva");
+    let btnGuardarTarea = document.getElementById("btnGuardarTarea");
+
+    textoTarea.value = tarea.texto;
+    fechaLimite.value = tarea.fechaLimite.toISOString().split("T")[0];
+
+    btnGuardarTarea.onclick = () => {
+        tarea.texto = textoTarea.value;
+        tarea.fechaLimite = new Date(fechaLimite.value);
+        tarea.fecha = new Date();
+        mostrarTareas();
+        ocultarFormulario();
+    };
 };
 
-const guardarCambiosTarea = (index) => {
-    const nuevoTexto = document.getElementById("inputTareaEditar").value;
-    const nuevaFechaLimite = document.getElementById("fechaLimiteEditar").value;
-    tareas[index].texto = nuevoTexto;
-    tareas[index].fechaLimite = new Date(nuevaFechaLimite);
-    mostrarTareas();
-    document.getElementById("formularios").innerHTML = "";
-};
+
 
 const mostrarResumen = () => {
     let resumen = document.getElementById("resumen");
-    if (tareas.length > 0) {
-        resumen.innerHTML = tareas.length > 1 ? `Tienes ${tareas.length} tareas.` : `Tienes 1 tarea.`;
-    } else {
-        resumen.innerText = `No tienes tareas.`;
-    }
+    let count = 0;
+    const contar = setInterval(() => {
+        resumen.innerHTML = `Tareas: ${count}`;
+        count++;
+        if (count === tareas.length) {
+            clearInterval(contar);
+        }
+    }, 100);
 }
 
-const guardarTodoEnStorage = document.getElementById("guardarTodoEnStorage");
+const mostrarMensaje = (mensaje) => {
+    Toastify({
+        text: mensaje,
+        duration: 2000,
+        style: {
+            background: '#0ABF28',
+            color: 'white'
+        }
+    }).showToast();
+}
 
-guardarTodoEnStorage.addEventListener("click", () => {
+const btnGuardarEnStorage = document.getElementById("btnGuardarEnStorage");
+
+btnGuardarEnStorage.addEventListener("click", () => {
     Swal.fire({
-        title: 'Está seguro de guardar las tareas?',
+        title: 'Se guardarán todas las tareas en el storage, está seguro?',
         showCancelButton: true,
         confirmButtonText: 'Sí',
         cancelButtonText: 'No'
     }).then((result) => {
         if (result.isConfirmed) {
             localStorage.setItem("tareas", JSON.stringify(tareas));
-            Toastify({
-                text: "Tareas guardadas!",
-                duration: 2000,
-            }).showToast();
+            mostrarMensaje("Tareas guardadas!");
         } else {
-            Toastify({
-                text: "NO se guardó nada!",
-                duration: 2000,
-                style: {
-                    background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,92,1) 50%, rgba(252,176,69,1) 100%)',
-                    padding: '1rem'
-                }
-            }).showToast();
+            mostrarMensaje("No se guardaron las tareas!");
         }
     });
 });
 
 const recuperarTodoDelStorage = () => {
+    const precarga = document.getElementById("precarga");
+    precarga.classList.remove("d-none");
     if (localStorage.getItem("tareas") !== null) {
-        tiempoDeGuardado = localStorage.getItem("tiempoDeGuardadoEnStorage")
-        tareasRecuperadas = JSON.parse(localStorage.getItem("tareas"));
-        tareas = tareasRecuperadas.map(tareaRecuperada => {
-            const tarea = new Tarea(
-                tareaRecuperada.texto,
-                tareaRecuperada.fechaLimite ? tareaRecuperada.fechaLimite : null
-            );
-            tarea.fecha = new Date(tareaRecuperada.fecha);
-            return tarea;
-        });
-        mostrarTareas();
-        mostrarResumen();
+        setTimeout(() => {
+            tiempoDeGuardado = localStorage.getItem("tiempoDeGuardadoEnStorage")
+            tareasRecuperadas = JSON.parse(localStorage.getItem("tareas"));
+            tareas = tareasRecuperadas.map(tareaRecuperada => {
+                const tarea = new Tarea(
+                    tareaRecuperada.texto,
+                    tareaRecuperada.fecha,
+                    tareaRecuperada.fechaLimite
+                );
+                tarea.fecha = new Date(tareaRecuperada.fecha);
+                return tarea;
+            });
+            mostrarTareas();
+            precarga.classList.add("d-none");
+        }, 2000);
     }
+    precarga.classList.remove("d-none");
 };
 
-
-const mostrarFormularioCrearTarea = () => {
-    const formulariosContainer = document.getElementById("formularios");
-    formulariosContainer.innerHTML = `
-      <h2>Nueva Tarea</h2>
-      <form id="formularioCrear">
-        <div class="row mt-3">
-          <div class="col-8">
-            <textarea rows="5" id="inputTareaNueva" class="form-control form-control-lg" required></textarea>
-          </div>
-          <div class="col-4 row">
-            <label for="fechaLimiteNueva" class="form-label">Fecha límite</label>
-            <input type="date" id="fechaLimiteNueva" class="form-control" required>
-            <div class="row mt-3">
-              <button type="button" class="btn btn-primary col-5 m-1" onclick="agregarTareaDesdeFormulario()">Guardar</button>
-              <button type="button" class="btn btn-secondary col-5 m-1" onclick="cancelarCreacionTarea()">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    `;
-};
 
 const agregarTareaDesdeFormulario = () => {
     const inputTareaNueva = document.getElementById("inputTareaNueva");
     const fechaLimiteNueva = document.getElementById("fechaLimiteNueva").value;
+    const fechaActual = new Date();
     if (inputTareaNueva.value !== "" || fechaLimiteNueva !== "") {
-        const tarea = new Tarea(inputTareaNueva.value, fechaLimiteNueva);
+        const tarea = new Tarea(inputTareaNueva.value, fechaActual, fechaLimiteNueva);
         tareas.push(tarea);
         inputTareaNueva.value = "";
         document.getElementById("fechaLimiteNueva").value = "";
         mostrarTareas();
-        mostrarResumen();
-        document.getElementById("formularios").innerHTML = "";
+        ocultarFormulario();
     }
 };
 
-const cancelarCreacionTarea = () => {
-    document.getElementById("formularios").innerHTML = "";
+const ocultarFormulario = () => {
+    formulariosContainer.classList.add("d-none");
+    document.getElementById("inputTareaNueva").value = "";
+    document.getElementById("fechaLimiteNueva").value = "";
 };
 
-const borrarTodoDeStorage = document.getElementById("borrarTodoDeStorage");
-
-borrarTodoDeStorage.addEventListener("click", () => {
-    localStorage.removeItem("tareas");
-    tareas = [];
-    mostrarTareas();
-    mostrarResumen();
-});
+const mostrarFormulario = () => {
+    formulariosContainer.classList.remove("d-none");
+    formulariosContainer.classList.add("formularios");
+    const btnCancelarTarea = document.getElementById("btnCancelarTarea");
+    btnCancelarTarea.onclick = () => ocultarFormulario();
+};
 
 let tareas = [];
 let tiempoDeGuardado = 5000;
 let contenido = document.getElementById("contenido");
+const formulariosContainer = document.getElementById("formularios");
 
 const btnNuevaTarea = document.getElementById("btnNuevaTarea");
 btnNuevaTarea.addEventListener("click", () => {
-    mostrarFormularioCrearTarea();
+    const btnGuardarTarea = document.getElementById("btnGuardarTarea");
+    btnGuardarTarea.onclick = () => agregarTareaDesdeFormulario();
+    mostrarFormulario();
 });
 
+const iniciar = () => {
+    ocultarFormulario();
+}
 
 recuperarTodoDelStorage();
+iniciar();
 
-//simulación de carga de datos.
 //retrasar la eliminación de una tarea.
 //Cuentra regresiva para la eliminación de una tarea.
 //Cuentra regresiva para el deadline de la tarea.
