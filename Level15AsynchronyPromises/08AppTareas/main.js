@@ -104,10 +104,10 @@ const mostrarResumen = () => {
     let count = 0;
     const contar = setInterval(() => {
         resumen.innerHTML = `Tareas: ${count}`;
-        count++;
-        if (count === tareas.length) {
+        if (count >= tareas.length) {
             clearInterval(contar);
         }
+        count++;
     }, 100);
 }
 
@@ -159,6 +159,10 @@ const recuperarTodoDelStorage = () => {
             mostrarTareas();
             precarga.classList.add("d-none");
         }, 2000);
+    } else {
+        //crear un array vacío en el storage
+        localStorage.setItem("tareas", JSON.stringify([]));
+        recuperarTodoDelStorage();
     }
     precarga.classList.remove("d-none");
 };
@@ -209,8 +213,3 @@ const iniciar = () => {
 
 recuperarTodoDelStorage();
 iniciar();
-
-//retrasar la eliminación de una tarea.
-//Cuentra regresiva para la eliminación de una tarea.
-//Cuentra regresiva para el deadline de la tarea.
-//Seleccionar un rango para el autoguardado de tareas.(tiempoDeGuardado)

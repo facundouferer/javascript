@@ -1,0 +1,102 @@
+[
+    {
+        "nombre": "Leche",
+        "precio": 700,
+        "id": 125
+    },
+    {
+        "nombre": "1Kg. Pan",
+        "precio": 600,
+        "id": 2
+    },
+    {
+        "nombre": "Arroz",
+        "precio": 3500,
+        "id": 3
+    },
+    {
+        "nombre": "Aceite de oliva",
+        "precio": 4500,
+        "id": 4
+    },
+    {
+        "nombre": "Café",
+        "precio": 5500,
+        "id": 5
+    },
+    {
+        "nombre": "Azúcar",
+        "precio": 2000,
+        "id": 6
+    },
+    {
+        "nombre": "Queso",
+        "precio": 3000,
+        "id": 7
+    },
+    {
+        "nombre": "Yogur",
+        "precio": 2500,
+        "id": 8
+    },
+    {
+        "nombre": "Pasta",
+        "precio": 1800,
+        "id": 9
+    },
+    {
+        "nombre": "Manzanas",
+        "precio": 3500,
+        "id": 10
+    },
+    {
+        "nombre": "Jabón de baño",
+        "precio": 4000,
+        "id": 11
+    },
+    {
+        "nombre": "Cepillo de dientes",
+        "precio": 1500,
+        "id": 12
+    },
+    {
+        "nombre": "Detergente",
+        "precio": 3200,
+        "id": 13
+    },
+    {
+        "nombre": "Papel higiénico",
+        "precio": 2800,
+        "id": 14
+    },
+    {
+        "nombre": "Galletas",
+        "precio": 2300,
+        "id": 15
+    },
+    {
+        "nombre": "Tomates",
+        "precio": 2700,
+        "id": 16
+    },
+    {
+        "nombre": "Cerveza",
+        "precio": 4000,
+        "id": 17
+    },
+    {
+        "nombre": "Mantequilla",
+        "precio": 2200,
+        "id": 18
+    },
+    {
+        "nombre": "Salsa de tomate",
+        "precio": 1800,
+        "id": 19
+    },
+    {
+        "nombre": "Papel aluminio",
+        "precio": 2500,
+        "id": 20
+    }
+]
