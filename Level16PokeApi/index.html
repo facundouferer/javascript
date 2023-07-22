@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ajax & Fetch</title>
-    <!--Boostrap-->
+    <title>PokeApi</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,35 +11,36 @@
       crossorigin="anonymous"
     />
   </head>
-
   <body class="container">
-    <h1>Pokémon</h1>
+    <h1>PokeApi</h1>
     <div class="row">
-      <div class="col-8">
-        <ol id="pokemonList" class="row"></ol>
+      <div class="col-7">
+        <ol id="listaDePokemones" class="row"></ol>
+        <button id="cargarMas" class="btn btn-success col-12 mb-5">
+          CARGAR MÁS
+        </button>
       </div>
-      <div class="col-4">
+
+      <div class="col-5">
         <form id="pokemonForm">
           <input
             type="text"
             id="pokemonInput"
-            required
-            placeholder="buscar pokemón"
+            class="form-control mb-2"
+            placeholder="BUSCAR"
           />
-          <button type="submit" class="btn btn-primary">OK</button>
+          <button type="submit" class="btn btn-primary col-12">BUSCAR</button>
         </form>
-
         <div id="pokemonInfo"></div>
       </div>
     </div>
 
-    <!--JS propio-->
-    <script src="main.js"></script>
-    <!--Boostrap-->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
       crossorigin="anonymous"
     ></script>
+
+    <script src="./main.js"></script>
   </body>
 </html>
