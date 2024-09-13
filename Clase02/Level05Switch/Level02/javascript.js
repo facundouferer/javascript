@@ -10,7 +10,7 @@ do {
         "3. Multiplicación\n" +
         "4. División\n" +
         "5. Salir"
-    ));
+    ))
 
     if (opcion >= 1 && opcion <= 4) {
         numero1 = parseFloat(prompt("Ingrese el primer número:"));
