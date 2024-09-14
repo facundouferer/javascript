@@ -4,6 +4,7 @@ const items = [
     { name: '0100', price: 45 },
     { name: '0', price: 60 }
 ]
+
 items.sort(
     (a, b) => {
         if (a.name > b.name) {

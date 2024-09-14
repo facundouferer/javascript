@@ -5,4 +5,4 @@ function multiplicarPor(n) {
 const multiplicarPorCinco = multiplicarPor(5);
 
 const resultado = multiplicarPorCinco(10);
-console.log(resultado);
+console.log("Resultado", resultado);
