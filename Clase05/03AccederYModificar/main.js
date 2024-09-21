@@ -28,7 +28,7 @@ titulo[0].innerText = "Este es el nuevo título";
 let contenido2 = document.getElementById("contenido2");
 
 //AGREGAR código HTML en un nodo
-contenido2.innerHTML = "<h1>ESTE TEXTO CAMBIÓ!</h1>";
+contenido2.innerHTML = "<h1>ESTE TEXTO CAMBIÓ!!!</h1>";
 contenido2.innerHTML += "<p>Este párrafo fue agregado con innerHTML</p>";
 
 //Definir LA CLASE de un nodo
