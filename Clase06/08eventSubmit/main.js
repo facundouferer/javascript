@@ -12,3 +12,7 @@ formulario.addEventListener("submit", (e) => {
     let apellido = document.getElementById("apellido")
     mensaje.innerHTML = `Hola ${nombre.value} ${apellido.value}`
 });
+
+document.addEventListener("keydown", (e) => {
+    console.log(`Tecla presionada: ${e.key}`);
+});

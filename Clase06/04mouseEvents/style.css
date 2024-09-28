@@ -7,7 +7,6 @@
     align-items: center;
 }
 
-
 #cuadradoRojo {
     background-color: red;
 }
@@ -18,4 +17,5 @@ h1 {
 
 #cuadradoAzul {
     background-color: blue;
+    color: white;
 }

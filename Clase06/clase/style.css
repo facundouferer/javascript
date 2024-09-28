@@ -1,0 +1,23 @@
+.colorPersonal {
+  color: red;
+  background-color: blueviolet;
+}
+
+.oscuridad {
+  color: white;
+  background-color: black;
+}
+
+.cuadrado {
+  height: 100px;
+  width: 200px;
+  background-color: blueviolet;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  margin-top: 20px;
+}
