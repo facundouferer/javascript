@@ -41,6 +41,16 @@ function agregarTarea() {
     tareas.push(new Tarea(tareaInput.value));
     tareaInput.value = "";
     actualizarTareas();
+
+    // Show Toastify notification
+    Toastify({
+      text: "Tarea agregada exitosamente!",
+      duration: 3000, // Duration in milliseconds
+      close: true, // Show close button
+      gravity: "top", // Position: top or bottom
+      position: "right", // Position: left, center or right
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", // Background color
+    }).showToast();
   }
 }
 
@@ -50,8 +60,24 @@ function marcarCompletada(index) {
 }
 
 function eliminarTarea(index) {
-  tareas.splice(index, 1);
-  actualizarTareas();
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "¡No podrás revertir esto!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      tareas.splice(index, 1);
+      actualizarTareas();
+      Swal.fire(
+        'Eliminado!',
+        'La tarea ha sido eliminada.',
+        'success'
+      );
+    }
+  });
 }
 
 tareaInput.addEventListener("keypress", function (e) {
