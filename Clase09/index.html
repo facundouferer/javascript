@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Place HOlder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Json Place Holder</h1>
+    <button type="button" onclick="mostrarFormulario()">NUEVO ARTÍCULO</button>
+    <div id="formEditarPost" style="display: none">
+      <form>
+        <input type="hidden" id="articuloId" />
+        <br /><br />
+        <input type="text" id="titleArticulo" />
+        <br /><br />
+        <textarea id="bodyArticulo"></textarea>
+        <br /><br />
+        <input type="hidden" id="articuloUsuario" />
+
+        <button id="btnEditar" type="button" onclick="editarArticulo()">
+          EDITAR
+        </button>
+
+        <button id="btnCrear" type="button" onclick="crearArticulo()">
+          CREAR
+        </button>
+      </form>
+    </div>
+
+    <div id="listaDeArticulos"></div>
+    <script src="main.js"></script>
+  </body>
+</html>
